@@ -22,11 +22,26 @@
 */
 
 
+static unsigned int redLED = 6;
+static unsigned int onboardLED = 13;
+static unsigned int buttonPin = 4;
+static unsigned int potPin = A1;
+bool onSTATE = false;
 
 void setup() {
-  
+  Serial.begin(9600);
+  Serial.println("SERIAL MONITOR IS CONFIGURED AT 9600");
+  Serial.println("-------------------------");
+  pinMode(redLED, OUTPUT);
+  pinMode(onboardLED, OUTPUT);
+  pinMode(buttonPin, INPUT);
 }
 
 void loop() {
-  
+  int read = digitalRead(buttonPin);
+  if (read == true){
+      onSTATE = !onSTATE;
+  }
+  digitalWrite(onboardLED, onSTATE);
+  delay(200);
 }
