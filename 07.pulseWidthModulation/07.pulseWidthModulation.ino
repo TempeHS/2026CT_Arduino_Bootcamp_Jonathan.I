@@ -1,5 +1,5 @@
 /*
-  Author: 
+  Author: Jonathan
 
   Learning Intention:
   The students will learn what 'pulse width modulation' is and how to use it to write
@@ -21,27 +21,57 @@
     https://github.com/TempeHS/TempeHS_Ardunio_Bootcamp/blob/main/07.pulseWidthModulation/Bootcamp-PWMOutput.png
 */
 
-
 static unsigned int redLED = 6;
 static unsigned int onboardLED = 13;
-static unsigned int buttonPin = 4;
-static unsigned int potPin = A1;
+static unsigned int buttonPIN = 4;
+static unsigned int potPIN = A1;
+
+//debounce parameters
+unsigned long lastDebounceTime = 0;
+unsigned long debounceDelay= 100; // miliseconds
+int lastButtonState = LOW;
+int buttonState = LOW;
 bool onSTATE = false;
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("SERIAL MONITOR IS CONFIGURED AT 9600");
-  Serial.println("-------------------------");
-  pinMode(redLED, OUTPUT);
+  Serial.println("Serial Monitor Configured for 9600");
+  Serial.println("-----------------");
   pinMode(onboardLED, OUTPUT);
-  pinMode(buttonPin, INPUT);
+  pinMode(redLED, OUTPUT); 
+  pinMode(buttonPIN, INPUT);  
+  
+
 }
 
 void loop() {
-  int read = digitalRead(buttonPin);
-  if (read == true){
-      onSTATE = !onSTATE;
+  int reading = digitalRead(buttonPIN);
+
+  // Check if button changed
+  if (reading != lastButtonState) {
+    lastDebounceTime = millis();
   }
+
+  // If enough time has passed (debounce)
+  if ((millis() - lastDebounceTime) > debounceDelay) {
+
+    // If button state changed, update debounced state
+    if (reading != buttonState) {
+      buttonState = reading;
+
+      // Only toggle on a HIGH transition (button press)
+        if (reading == true) {
+        onSTATE = !onSTATE;
+      }
+    }
+  }
+
+
+  if (reading == true) {
+    onSTATE = !onSTATE;
+  }
+  lastButtonState = reading; // Save for next loop
   digitalWrite(onboardLED, onSTATE);
-  delay(200);
+  digitalWrite(redLED, onSTATE);
+  delay(10); // Small delay for stability
 }
