@@ -1,5 +1,5 @@
 /*
-  Author: Jonathan
+  Author: 
 
   Learning Intention:
   The students will learn what 'pulse width modulation' is and how to use it to write
@@ -25,6 +25,7 @@ static unsigned int redLED = 6;
 static unsigned int onboardLED = 13;
 static unsigned int buttonPIN = 4;
 static unsigned int potPIN = A1;
+
 
 //debounce parameters
 unsigned long lastDebounceTime = 0;
@@ -54,13 +55,12 @@ void loop() {
 
   // If enough time has passed (debounce)
   if ((millis() - lastDebounceTime) > debounceDelay) {
-
     // If button state changed, update debounced state
     if (reading != buttonState) {
       buttonState = reading;
 
       // Only toggle on a HIGH transition (button press)
-        if (reading == true) {
+        if (buttonState == HIGH) {
         onSTATE = !onSTATE;
       }
     }
@@ -70,8 +70,22 @@ void loop() {
   if (reading == true) {
     onSTATE = !onSTATE;
   }
+
   lastButtonState = reading; // Save for next loop
-  digitalWrite(onboardLED, onSTATE);
-  digitalWrite(redLED, onSTATE);
-  delay(10); // Small delay for stability
+
+  unsigned int dimmer = analogRead(potPIN);
+  Serial.println(dimmer);
+  dimmer = map(dimmer, 0, 255, 0 , 1023);
+
+  if (onSTATE) {
+  analogWrite(onboardLED, dimmer);
+  analogWrite(redLED, dimmer);
+
+  } else {
+  analogWrite(onboardLED, false);
+  analogWrite(redLED, false);
+  }
+
+    delay(10); // Small delay for stability
+
 }
