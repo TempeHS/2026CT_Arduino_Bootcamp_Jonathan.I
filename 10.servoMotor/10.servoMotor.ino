@@ -22,12 +22,44 @@
     https://github.com/TempeHS/TempeHS_Ardunio_Bootcamp/blob/main/10.servoMotor/Bootcamp-servoMotor.png
 */
 
+#include<Arduino.h>
+#include<U8g2lib.h>
+#include<SPI.h>
+#include<Wire.h>
+
 #include <Servo.h>
+#include "Ultrasonic.h"
+
+unsigned static int servoPin = 6;
+unsigned static int usPin = 5;
+
+
+Servo myservo;  
+Ultrasonic us_sensor(usPin);
+
+int potpin = A1; 
+int val;
+
 
 void setup() {
-  
+  myservo.attach(servoPin);
+  Serial.begin(9600);
+  Serial.println("Baud 9600");
+  Serial.println("-------");
+
 }
 
 void loop() {
+
+  unsigned long range_in_cm;
+  range_in_cm = us_sensor.distanceRead();
+  range_in_cm = map(range_in_cm, 0, 1023, 0, 180);
+
+  val = analogRead(potpin);
+  val = map(val, 0, 1023, 0, 180);
+
+-
+
   
+
 }
