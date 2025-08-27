@@ -56,18 +56,51 @@ void setup() {
   delay(3000);
 }
 
+
 void loop() {
+
+  static String inputString = "";
+static bool stringComplete = false;
+
   unsigned long RangeInCetimeters;
 
   RangeInCetimeters = myUltraSonicSensor.distanceRead();
+
   Serial.print(RangeInCetimeters);
   Serial.println(" cm");
-  delay(15);
-  RangeInCetimeters = map(RangeInCetimeters, 0, 357, 0, 180);
-  myservo.write(RangeInCetimeters);
+  
+  while (Serial.available()) {
+    char inChar = (char)Serial.read();
+    if (inChar == '\n') {
+    stringComplete = true;
+    break;
+  } else if (inChar != '\r') {
+    inputString += inChar;
+
+  /*unsigned long RangeInCentimeters;
+
+  // Read distance from ultrasonic sensor
+  RangeInCentimeters = myUltraSonicSensor.distanceRead();
+  Serial.print(RangeInCentimeters);
+  Serial.println(" cm");
+
+  // Map the range to servo angle and write to servo
+  int angle = map(RangeInCentimeters, 0, 357, 0, 180);
+  myservo.write(angle);
+
+  
+  
+  OLED.clearBuffer(); 
+  OLED.setFont(u8g2_font_6x12_tf); 
+  OLED.setCursor(0, 15);
+  OLED.print("Distance: ");
+  OLED.print(RangeInCentimeters);
+  OLED.print(" cm");
+  OLED.sendBuffer(); 
+  delay(15); /*
+}
 
   /* val = analogRead(potpin);
   val = map(val, 0, 1023, 0, 180); 
   myservo.write(val);
   delay(15); */
-}
