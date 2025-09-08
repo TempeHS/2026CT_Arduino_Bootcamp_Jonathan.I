@@ -47,60 +47,26 @@ void setup() {
   myservo.attach(servoPin);
   Serial.begin(9600);
   Serial.println("Baud 9600");
-  Serial.println("--------------------------------------------------------------");
-
+  Serial.println("-----------------------------------");
   OLED.begin();
-  OLED.setFont(u8g2_font_6x12_tf);
-  OLED.drawStr(0, 10, "Version 0.2");
-  OLED.nextPage();
-  delay(3000);
+
 }
 
 
 void loop() {
 
-  static String inputString = "";
-static bool stringComplete = false;
+  String cleanString = "Distance: 12cm";
+  OLED.setFont(u8g2_font_6x12_tf);
+  OLED.drawStr(0, 10, cleanString.c_str());
+  OLED.nextPage();
 
-  unsigned long RangeInCetimeters;
-
-  RangeInCetimeters = myUltraSonicSensor.distanceRead();
-
-  Serial.print(RangeInCetimeters);
-  Serial.println(" cm");
-  
-  while (Serial.available()) {
-    char inChar = (char)Serial.read();
-    if (inChar == '\n') {
-    stringComplete = true;
-    break;
-  } else if (inChar != '\r') {
-    inputString += inChar;
-
-  /*unsigned long RangeInCentimeters;
-
-  // Read distance from ultrasonic sensor
-  RangeInCentimeters = myUltraSonicSensor.distanceRead();
-  Serial.print(RangeInCentimeters);
-  Serial.println(" cm");
-
-  // Map the range to servo angle and write to servo
-  int angle = map(RangeInCentimeters, 0, 357, 0, 180);
-  myservo.write(angle);
-
-  
-  
-  OLED.clearBuffer(); 
-  OLED.setFont(u8g2_font_6x12_tf); 
-  OLED.setCursor(0, 15);
-  OLED.print("Distance: ");
-  OLED.print(RangeInCentimeters);
-  OLED.print(" cm");
-  OLED.sendBuffer(); 
-  delay(15); /*
 }
 
-  /* val = analogRead(potpin);
-  val = map(val, 0, 1023, 0, 180); 
-  myservo.write(val);
-  delay(15); */
+
+
+
+
+
+
+
+
