@@ -35,7 +35,7 @@ unsigned static int servoPin = 6;
 unsigned static int usPin = 5;
 
 Servo myservo;
-Ultrasonic myUltraSonicSensor(usPin);
+Ultrasonic us_sensor(usPin);
 
 int potpin = A1;
 int val;
@@ -54,8 +54,10 @@ void setup() {
 
 
 void loop() {
-
-  String cleanString = "Distance: 12cm";
+  u8g2.clearBuffer();
+  unsigned long range_in_cm;
+  range_in_cm = us_sensor.distanceRead();
+  String cleanString = String(range_in_cm);
   OLED.setFont(u8g2_font_6x12_tf);
   OLED.drawStr(0, 10, cleanString.c_str());
   OLED.nextPage();
@@ -70,3 +72,64 @@ void loop() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*unsigned long RangeInCentimeters;
+
+
+  RangeInCentimeters = myUltraSonicSensor.distanceRead();
+  Serial.print(RangeInCentimeters);
+  Serial.println(" cm");
+
+  int angle = map(RangeInCentimeters, 0, 357, 0, 180);
+  myservo.write(angle);
+
+  
+  OLED.clearBuffer(); 
+  OLED.setFont(u8g2_font_6x12_tf); 
+  OLED.setCursor(0, 15);
+  OLED.print("Distance: ");
+  OLED.print(RangeInCentimeters);
+  OLED.print(" cm");
+  OLED.sendBuffer(); 
+  delay(15); /*
+
+  /* val = analogRead(potpin);
+  val = map(val, 0, 1023, 0, 180); 
+  myservo.write(val);
+  delay(15); */
